@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Leva, miga! Achados · as melhores ofertas da internet</title>
+<meta name="description" content="Achadinhos e promoções do dia da Shopee, Amazon, Mercado Livre e Magalu, escolhidos a dedo e atualizados o dia todo.">
+<meta name="theme-color" content="#B5124F">
+<meta property="og:title" content="Leva, miga! Achados">
+<meta property="og:description" content="As melhores ofertas do dia, de todas as lojas, num lugar só.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<style>
+:root{--accent:#B5124F;--accent-ink:#8a0d3c;--ink:#2a1720;--muted:#7d6370;--bg:#fff7fa;--line:#f3dbe5;--card:#fff;--r:18px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+img{display:block;max-width:100%}
+a{color:inherit}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.sr{position:absolute;left:-9999px}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 55%,#fff);outline-offset:2px}
+
+.strip{background:var(--ink);color:#fff;font-size:14px;font-weight:500}
+.strip .wrap{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;padding:9px 16px}
+.strip a{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;padding:6px 14px;border-radius:999px;font-size:13px}
+
+header{background:var(--accent);color:#fff;position:sticky;top:0;z-index:20;box-shadow:0 2px 14px rgba(90,10,40,.12)}
+header .wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding:12px 20px}
+.logo{display:flex;align-items:baseline;gap:6px;color:#fff;text-decoration:none}
+.logo b{font-family:Fraunces,serif;font-weight:800;font-size:27px;letter-spacing:-.02em}
+.logo span{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+nav.menu{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+nav.menu a{color:#fff;text-decoration:none;opacity:.92;padding:4px 0;border-bottom:2px solid transparent}
+nav.menu a:hover,nav.menu a.on{opacity:1;border-color:#fff}
+.search{flex:1 1 260px;display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:0 16px;height:44px;color:var(--muted)}
+.search input{border:0;outline:none;flex:1;font-size:15px;color:var(--ink);background:transparent;min-width:0}
+.search input::-webkit-search-cancel-button{display:none}
+
+main{padding:22px 0 48px}
+h2.t{font-family:Fraunces,serif;font-size:24px;line-height:1.15}
+.sec{margin-top:30px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.sec-h a,.more{font-size:14px;font-weight:700;color:var(--accent);text-decoration:none}
+.sub{font-size:13.5px;color:var(--muted)}
+
+.stores{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.stores .lbl{font-weight:700;font-size:15px;margin-right:4px}
+.chip{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:999px;font-weight:700;font-size:14px;border:1.5px solid var(--line);background:#fff;color:var(--ink);text-decoration:none}
+.chip i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip.on i{background:#fff!important}
+
+.cats{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:thin}
+.cat{flex:none;width:94px;display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.cat .ring{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;transition:transform .15s}
+.cat:hover .ring{transform:translateY(-2px)}
+.cat.on .ring{background:var(--accent)!important;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--accent)}
+.cat.on svg{stroke:#fff}
+.cat b{font-size:12.5px;text-align:center;line-height:1.2}
+
+.hot{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px}
+.big{display:flex;gap:22px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;text-decoration:none;color:var(--ink);min-width:0}
+.big .ph{flex:1 1 50%;aspect-ratio:1;border-radius:14px;overflow:hidden;background:#fff;display:grid;place-items:center}
+.big .ph img{width:100%;height:100%;object-fit:contain}
+.big .info{flex:1 1 50%;min-width:0;display:flex;flex-direction:column;gap:9px}
+.big .ttl{font-family:Fraunces,serif;font-size:26px;font-weight:800;line-height:1.15;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.big .now{font-size:34px;font-weight:800;color:var(--accent)}
+.go{align-self:flex-start;background:var(--accent);color:#fff;font-weight:700;padding:12px 22px;border-radius:999px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.card{position:relative;min-width:0;display:flex;flex-direction:column;gap:5px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;text-decoration:none;color:var(--ink);transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(120,20,60,.09)}
+.card .ph{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#fff}
+.card .ph img{width:100%;height:100%;object-fit:contain}
+.off{position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;font-weight:800;font-size:12px;padding:3px 9px;border-radius:999px;z-index:1}
+.pin{position:absolute;top:8px;left:8px;background:#fff;color:var(--accent);font-weight:800;font-size:11px;padding:3px 8px;border-radius:999px;box-shadow:0 2px 8px rgba(42,23,32,.15);z-index:1}
+.st{position:absolute;bottom:8px;right:8px;min-width:30px;height:30px;padding:0 7px;border-radius:999px;display:grid;place-items:center;font-size:11px;font-weight:800;background:#fff;box-shadow:0 2px 8px rgba(42,23,32,.15)}
+.st.shopee{color:#EE4D2D}.st.amazon{color:#232F3E}.st.ml{color:#2D3277}.st.magalu{color:#0086FF}
+.when{font-size:12px;color:var(--muted);margin-top:4px}
+.name{font-weight:700;font-size:14px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}
+.was{font-size:12.5px;color:var(--muted);text-decoration:line-through;min-height:16px}
+.now{font-size:21px;font-weight:800;color:var(--accent)}
+.sold{font-size:12px;color:var(--muted)}
+.cupom{font-size:12px;font-weight:700;color:#1d6b3f;background:#e4f5ea;border-radius:8px;padding:5px 8px;align-self:flex-start}
+
+.best{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scrollbar-width:thin}
+.bcard{flex:none;width:260px;display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;text-decoration:none;color:var(--ink)}
+.bcard .n{font-family:Fraunces,serif;font-size:32px;font-weight:800;color:var(--accent);width:30px;text-align:center;flex:none}
+.bcard img{width:64px;height:64px;object-fit:contain;border-radius:10px;flex:none;background:#fff}
+.bcard .bi{min-width:0;display:flex;flex-direction:column;gap:3px}
+.bcard .bi b{font-size:13.5px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bcard .bi span{font-weight:800;color:var(--accent)}
+
+.vip{margin-top:38px;background:var(--accent);color:#fff;border-radius:24px;padding:30px 28px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.vip h2{font-family:Fraunces,serif;font-size:28px;margin-bottom:8px}
+.vip p{font-size:15.5px;line-height:1.5;opacity:.93;max-width:560px}
+.vip a{background:#fff;color:var(--accent);text-decoration:none;font-weight:800;padding:14px 26px;border-radius:999px;font-size:16px}
+
+.loadmore{display:block;margin:22px auto 0;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:12px 26px;font-weight:700}
+.empty{text-align:center;color:var(--muted);padding:40px 10px}
+.skel{background:linear-gradient(90deg,#f8e8ef,#fdf3f7,#f8e8ef);background-size:200% 100%;animation:sk 1.2s infinite;border-radius:var(--r);height:330px}
+@keyframes sk{to{background-position:-200% 0}}
+.crumb{font-size:14px;color:var(--muted);margin-bottom:10px}
+.crumb a{color:var(--accent);font-weight:700;text-decoration:none}
+.sortbar{display:flex;gap:8px;flex-wrap:wrap}
+.sortbar button{height:36px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-weight:700;font-size:13px}
+.sortbar button.on{border-color:var(--accent);color:var(--accent)}
+
+footer{border-top:1px solid var(--line);background:#fff}
+footer .wrap{padding:24px 20px;display:flex;gap:18px;justify-content:space-between;flex-wrap:wrap;font-size:13px;color:var(--muted);line-height:1.55}
+footer p{max-width:680px}
+footer nav{display:flex;gap:16px;flex-wrap:wrap}
+footer nav a{color:var(--accent);font-weight:700;text-decoration:none}
+
+@media (max-width:900px){
+  .hot{grid-template-columns:1fr 1fr}
+  .big{grid-column:1/-1}
+}
+@media (max-width:640px){
+  .wrap{padding:0 14px}
+  header{position:static}
+  header .wrap{gap:10px;padding:10px 14px}
+  nav.menu{order:3;width:100%;overflow-x:auto;flex-wrap:nowrap;gap:16px;font-size:12px;scrollbar-width:none}
+  nav.menu::-webkit-scrollbar{display:none}
+  nav.menu a{white-space:nowrap}
+  .search{order:2;flex:1 1 100%;height:42px}
+  .logo b{font-size:24px}
+  .stores{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -14px;padding:0 14px}
+  .stores .lbl{display:none}
+  .chip{flex:none;height:38px;font-size:13.5px}
+  .cat{width:72px}.cat .ring{width:62px;height:62px}.cat svg{width:26px;height:26px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .card{padding:9px;border-radius:16px}
+  .now{font-size:18px}
+  .name{font-size:13px}
+  .big{flex-direction:column;align-items:stretch;padding:14px}
+  .big .ttl{font-size:21px}.big .now{font-size:28px}
+  .vip{padding:22px 20px}.vip h2{font-size:23px}.vip a{width:100%;text-align:center}
+  h2.t{font-size:21px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="strip"><div class="wrap"><span id="topText">Receba os achadinhos no seu WhatsApp, todo dia</span><a id="topVip" href="#vip">Entrar no grupo VIP <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></div></div>
+<header><div class="wrap">
+  <a class="logo" href="#/"><b>Leva, miga!</b><span>achados</span></a>
+  <nav class="menu" aria-label="Menu">
+    <a href="#/promocoes" data-m="promocoes">Promoções do dia</a>
+    <a href="#/mais-vendidos" data-m="mais-vendidos">Mais vendidos</a>
+    <a href="#/categorias" data-m="categorias">Categorias</a>
+  </nav>
+  <form class="search" id="sf" role="search"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><label class="sr" for="q">Buscar</label><input id="q" type="search" enterkeyhint="search" placeholder="Buscar achadinhos: air fryer, tênis, organizador…" autocomplete="off"></form>
+</div></header>
+<main><div class="wrap" id="app"><div class="grid" style="margin-top:20px"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div></div></main>
+<footer><div class="wrap"><p><span id="footText">Os preços e o estoque podem mudar a qualquer momento, então confira na loja antes de finalizar.</span> Este site participa de programas de afiliados da Shopee, Amazon, Mercado Livre e Magalu: posso receber uma comissão pelas compras feitas pelos links, sem nenhum custo a mais pra você.</p>
+<nav aria-label="Rodapé"><a id="footIg" href="#" target="_blank" rel="noopener" hidden>Instagram</a><a id="footVip" href="#vip">Grupo VIP</a></nav></div></footer>
+
+<script>
+/* Configuração do banco (chave PÚBLICA do Supabase: só permite ler as ofertas) */
+const SUPABASE_URL = 'https://nctrxkfjoexqtemywbxo.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5jdHJ4a2Zqb2V4cXRlbXl3YnhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxNzg0MTIsImV4cCI6MjEwNzc1NDQxMn0.lFEIx7q4bOaqdEK3kSFKZ27mmgg6i5PPwBf1lWYKuno';
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+const $app = document.getElementById('app');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const norm = s => String(s ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const brl = v => (Number(v) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const STORES = { shopee: ['Shopee', 'S', '#EE4D2D'], amazon: ['Amazon', 'a', '#232F3E'], ml: ['Mercado Livre', 'ML', '#E8C400'], magalu: ['Magalu', 'M', '#0086FF'] };
+const ICON = {
+  beleza: 'M9 3h6v4H9zM8 7h8v14H8zM8 12h8', casa: 'M3 11 12 4l9 7M5 10v10h14V10M10 20v-6h4v6', moda: 'M8 3 4 6l2 4 2-1v12h8V9l2 1 2-4-4-3c-1 2-2 3-4 3S9 5 8 3z',
+  cozinha: 'M5 11h14v3a6 6 0 0 1-6 6h-2a6 6 0 0 1-6-6zM8 7v2M12 5v4M16 7v2', eletro: 'M3 5h18v11H3zM8 20h8M12 16v4', celular: 'M7 2h10v20H7zM11 18h2',
+  info: 'M4 5h16v10H4zM2 19h20', esporte: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18', bebe: 'M12 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM6 21c0-4 3-6 6-6s6 2 6 6',
+  pet: 'M5 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM9 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM15 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM12 11c-4 0-6 4-6 7 0 2 2 3 6 3s6-1 6-3c0-3-2-7-6-7z',
+  brinquedo: 'M4 9h16v11H4zM8 9V6a4 4 0 0 1 8 0v3', ferramenta: 'M14 6a4 4 0 0 0 5 5l-9 9-3-3 9-9-2-2z', auto: 'M3 13l2-5h14l2 5v5H3zM7 18v2M17 18v2M6 13h12',
+  games: 'M6 9h12a4 4 0 0 1 0 8l-2-2H8l-2 2a4 4 0 0 1 0-8zM8 12v2M7 13h2M15 12h.01M17 14h.01', mercado: 'M5 8h14l-1 12H6zM9 8a3 3 0 0 1 6 0'
+};
+const TINT = ['#fbd3e2', '#fde9c8', '#d9e6fb', '#d6f2ec', '#e5dcfb', '#fbe0d3', '#dceffb', '#e2f5d3', '#fbe8f3', '#f6ecd8', '#fff2c2', '#e3e6ea', '#dfe7ef', '#e9defa', '#dff2dc'];
+
+let D = { items: [], cats: [], look: {}, stores: [], updatedAt: null };
+let show = 24;
+
+function ago(iso) {
+  const m = Math.max(1, Math.round((Date.now() - Date.parse(iso)) / 60000));
+  if (m < 60) return `há ${m} min`; const h = Math.round(m / 60); if (h < 24) return `há ${h}h`; const d = Math.round(h / 24); return d === 1 ? 'ontem' : `há ${d} dias`;
+}
+function applyLook() {
+  const L = D.look || {};
+  const col = /^#[0-9a-f]{6}$/i.test(L.color || '') ? L.color : '#B5124F';
+  document.documentElement.style.setProperty('--accent', col);
+  document.querySelector('meta[name=theme-color]').setAttribute('content', col);
+  if (L.topText) document.getElementById('topText').textContent = L.topText;
+  if (L.footer) document.getElementById('footText').textContent = L.footer;
+  const vip = L.groupUrl && /^https:\/\//.test(L.groupUrl) ? L.groupUrl : '';
+  for (const id of ['topVip', 'footVip']) { const a = document.getElementById(id); if (vip) { a.href = vip; a.target = '_blank'; a.rel = 'noopener'; } else a.closest('.strip') ? a.closest('.strip').hidden = true : a.hidden = true; }
+  const ig = document.getElementById('footIg'); if (L.instagramUrl && /^https:\/\//.test(L.instagramUrl)) { ig.href = L.instagramUrl; ig.hidden = false; }
+}
+const catName = k => (D.cats.find(c => c.k === k) || {}).name || 'Achados';
+const sortScore = (a, b) => (b.pinned - a.pinned) || (b.score - a.score);
+const sortSales = (a, b) => (b.sales || 0) - (a.sales || 0) || (b.score - a.score);
+
+function card(p) {
+  const s = STORES[p.store] || ['Loja', '?'];
+  return `<a class="card" href="${esc(p.link)}" target="_blank" rel="noopener sponsored" data-id="${esc(p.id)}">
+    <div class="ph">${p.discount ? `<span class="off">-${Math.round(p.discount)}%</span>` : ''}${p.pinned ? '<span class="pin">destaque</span>' : ''}<img src="${esc(p.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"><span class="st ${esc(p.store)}" title="${s[0]}">${s[1]}</span></div>
+    <span class="when">${ago(p.added_at || p.updated_at)} · ${s[0]}</span>
+    <span class="name">${esc(p.title)}</span>
+    <span class="was">${p.old_price ? brl(p.old_price) : ''}</span>
+    <span class="now">${brl(p.price)}</span>
+    ${p.sales ? `<span class="sold">${p.sales >= 1000 ? '+' + Math.floor(p.sales / 1000) + ' mil' : p.sales} vendidos</span>` : ''}
+    ${p.coupon ? `<span class="cupom">Cupom ${esc(p.coupon)}</span>` : ''}
+  </a>`;
+}
+function storeChips(cur, base) {
+  const ks = ['todas', ...D.stores.filter(k => D.items.some(i => i.store === k))];
+  return `<section class="stores" aria-label="Filtrar por loja"><span class="lbl">Filtrar por loja</span>${ks.map(k => `<a class="chip ${k === cur ? 'on' : ''}" href="${base}${k === 'todas' ? '' : (base.includes('?') ? '&' : '?') + 'loja=' + k}">${k === 'todas' ? 'Todas as lojas' : `<i style="background:${STORES[k][2]}"></i>${STORES[k][0]}`}</a>`).join('')}</section>`;
+}
+function catsRow(cur) {
+  return `<div class="cats">${D.cats.filter(c => D.items.some(i => i.cat === c.k)).map((c, i) => `<a class="cat ${c.k === cur ? 'on' : ''}" href="#/c/${c.k}"><span class="ring" style="background:${TINT[i % TINT.length]}"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2a1720" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${ICON[c.k] || ICON.casa}"/></svg></span><b>${esc(c.name)}</b></a>`).join('')}</div>`;
+}
+function gridBlock(list, title, sub) {
+  const more = list.length > show;
+  return `<section class="sec"><div class="sec-h"><h2 class="t">${title}</h2><span class="sub">${sub || `${list.length} ofertas`}</span></div>
+    ${list.length ? `<div class="grid">${list.slice(0, show).map(card).join('')}</div>${more ? '<button class="loadmore" id="more">Ver mais ofertas</button>' : ''}` : '<p class="empty">Nenhuma oferta aqui agora. Volta daqui a pouquinho que o site atualiza o dia todo 💕</p>'}</section>`;
+}
+function vipBlock() {
+  const u = D.look?.groupUrl; if (!u) return '';
+  return `<section class="vip" id="vip"><div><h2>Achado bom a gente divide com as migas</h2><p>Entra no grupo VIP do WhatsApp e recebe as melhores ofertas do dia antes de todo mundo.</p></div><a href="${esc(u)}" target="_blank" rel="noopener">Quero entrar no grupo</a></section>`;
+}
+function params() { const h = location.hash.replace(/^#\/?/, ''); const [p, q] = h.split('?'); return { path: p.split('/').filter(Boolean), qs: new URLSearchParams(q || '') }; }
+function route() {
+  const { path, qs } = params();
+  const loja = qs.get('loja') || 'todas';
+  const byStore = l => loja === 'todas' ? l : l.filter(i => i.store === loja);
+  document.querySelectorAll('nav.menu a').forEach(a => a.classList.toggle('on', a.dataset.m === path[0]));
+  const qIn = document.getElementById('q');
+  let html = '';
+  if (path[0] === 'c' && path[1]) {
+    const k = path[1]; const list = byStore(D.items.filter(i => i.cat === k)).sort(sortScore);
+    document.title = `${catName(k)} · Leva, miga! Achados`;
+    html = `<div class="crumb"><a href="#/">Início</a> › ${esc(catName(k))}</div>` + storeChips(loja, `#/c/${k}`) + `<div class="sec">${catsRow(k)}</div>` + gridBlock(list, `Promoções em ${esc(catName(k))}`);
+  } else if (path[0] === 'busca') {
+    const q = qs.get('q') || ''; qIn.value = q;
+    const ws = norm(q).split(/\s+/).filter(Boolean);
+    const list = byStore(D.items.filter(i => { const t = norm(i.title); return ws.every(w => t.includes(w)); })).sort(sortScore);
+    document.title = `“${q}” · Leva, miga! Achados`;
+    html = `<div class="crumb"><a href="#/">Início</a> › Busca</div>` + storeChips(loja, `#/busca?q=${encodeURIComponent(q)}`) + gridBlock(list, `Resultados pra “${esc(q)}”`);
+  } else if (path[0] === 'mais-vendidos') {
+    const list = byStore(D.items.filter(i => i.sales > 0)).sort(sortSales);
+    document.title = 'Mais vendidos · Leva, miga! Achados';
+    html = storeChips(loja, '#/mais-vendidos') + gridBlock(list, 'Mais vendidos', 'os que mais saem nas lojas');
+  } else if (path[0] === 'categorias') {
+    document.title = 'Categorias · Leva, miga! Achados';
+    html = `<section class="sec"><h2 class="t" style="margin-bottom:14px">Todas as categorias</h2><div class="cats" style="flex-wrap:wrap;overflow:visible">${D.cats.filter(c => D.items.some(i => i.cat === c.k)).map((c, i) => `<a class="cat" href="#/c/${c.k}"><span class="ring" style="background:${TINT[i % TINT.length]}"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2a1720" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${ICON[c.k] || ICON.casa}"/></svg></span><b>${esc(c.name)}</b><span class="sub">${D.items.filter(x => x.cat === c.k).length} ofertas</span></a>`).join('')}</div></section>`;
+  } else if (path[0] === 'promocoes') {
+    const list = byStore(D.items).sort(sortScore);
+    document.title = 'Promoções do dia · Leva, miga! Achados';
+    html = storeChips(loja, '#/promocoes') + `<div class="sec">${catsRow('')}</div>` + gridBlock(list, 'Promoções do dia', `${list.length} ofertas${D.updatedAt ? ' · atualizado ' + ago(D.updatedAt) : ''}`);
+  } else {
+    document.title = 'Leva, miga! Achados · as melhores ofertas da internet';
+    qIn.value = '';
+    const all = byStore(D.items).sort(sortScore);
+    const hot = all.filter(i => i.discount >= 20).slice(0, 3);
+    const H = hot[0];
+    const best = byStore(D.items.filter(i => i.sales > 0)).sort(sortSales).slice(0, 12);
+    const rest = all.filter(i => !hot.includes(i));
+    html = storeChips(loja, '#/')
+      + `<section class="sec"><div class="sec-h"><h2 class="t">Categorias</h2><a href="#/categorias">Ver todas</a></div>${catsRow('')}</section>`
+      + (H ? `<section class="sec"><div class="sec-h"><h2 class="t">Ofertas mais quentes</h2></div><div class="hot">
+        <a class="big" href="${esc(H.link)}" target="_blank" rel="noopener sponsored" data-id="${esc(H.id)}"><div class="ph"><img src="${esc(H.image)}" alt="" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"></div><div class="info">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${H.discount ? `<span class="off" style="position:static">-${Math.round(H.discount)}%</span>` : ''}<span class="sub">${ago(H.added_at || H.updated_at)} · ${STORES[H.store]?.[0] || ''}</span></div>
+          <span class="ttl">${esc(H.title)}</span>${H.sales ? `<span class="sub">${H.sales >= 1000 ? '+' + Math.floor(H.sales / 1000) + ' mil' : H.sales} vendidos${H.rating ? ' · nota ' + String(H.rating).replace('.', ',') : ''}</span>` : ''}
+          ${H.old_price ? `<span class="was">${brl(H.old_price)}</span>` : ''}<span class="now">${brl(H.price)}</span><span class="go">Ver oferta</span></div></a>
+        ${hot.slice(1).map(card).join('')}</div></section>` : '')
+      + gridBlock(rest, 'Promoções do dia', `${D.items.length} ofertas${D.updatedAt ? ' · atualizado ' + ago(D.updatedAt) : ''}`)
+      + (best.length ? `<section class="sec"><div class="sec-h"><h2 class="t">Mais vendidos</h2><a href="#/mais-vendidos">Ver todos</a></div><div class="best">${best.map((p, i) => `<a class="bcard" href="${esc(p.link)}" target="_blank" rel="noopener sponsored" data-id="${esc(p.id)}"><span class="n">${i + 1}</span><img src="${esc(p.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"><span class="bi"><b>${esc(p.title)}</b><span>${brl(p.price)}</span><small class="sub">${p.sales >= 1000 ? '+' + Math.floor(p.sales / 1000) + ' mil' : p.sales} vendidos</small></span></a>`).join('')}</div></section>` : '')
+      + vipBlock();
+  }
+  $app.innerHTML = html;
+  const m = document.getElementById('more'); if (m) m.onclick = () => { show += 24; const y = scrollY; route(); scrollTo(0, y); };
+}
+// conta o clique (sem atrapalhar a ida pra loja)
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[data-id]'); if (!a) return;
+  try { fetch(`${SUPABASE_URL}/rest/v1/rpc/site_click`, { method: 'POST', keepalive: true, headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ pid: a.dataset.id }) }); } catch {}
+});
+document.getElementById('sf').onsubmit = e => { e.preventDefault(); const q = document.getElementById('q').value.trim(); location.hash = q ? `#/busca?q=${encodeURIComponent(q)}` : '#/'; };
+window.addEventListener('hashchange', () => { show = 24; route(); if (!location.hash.includes('vip')) scrollTo(0, 0); });
+
+(async () => {
+  try {
+    const [s, it] = await Promise.all([
+      sb.from('site_settings').select('*').eq('id', 1).maybeSingle(),
+      sb.from('site_items').select('id,store,cat,title,image,price,old_price,discount,sales,rating,link,coupon,score,pinned,added_at,updated_at').order('score', { ascending: false }).limit(3000)
+    ]);
+    if (it.error) throw it.error;
+    const st = s.data?.data || {};
+    D = { items: (it.data || []).map(x => ({ ...x, score: Number(x.score) || 0, price: Number(x.price) || 0, old_price: Number(x.old_price) || 0 })), cats: st.cats || [], look: st.look || {}, stores: st.stores || ['shopee', 'amazon', 'ml', 'magalu'], updatedAt: st.updatedAt || s.data?.updated_at };
+    applyLook(); route();
+  } catch (e) {
+    $app.innerHTML = '<p class="empty">As ofertas estão sendo preparadas. Volta daqui a pouquinho 💕</p>';
+  }
+})();
+</script>
+</body>
+</html>
