@@ -316,7 +316,7 @@ function card(p) {
     <span class="name">${esc(p.title)}</span>
     <span class="was">${p.old_price ? brl(p.old_price) : ''}</span>
     <span class="now">${brl(p.price)}</span>
-    ${p.sales ? `<span class="sold">${p.sales >= 1000 ? '+' + Math.floor(p.sales / 1000) + ' mil' : p.sales} vendidos</span>` : ''}
+    ${p.sales ? `<span class="sold">${p.sales >= 1000 ? '+' + Math.floor(p.sales / 1000) + ' mil' : p.sales} vendidos</span>` : p.rating ? `<span class="sold">★ ${String(Number(p.rating).toFixed(1)).replace('.', ',')} de avaliação</span>` : ''}
     </a>
     ${couponRow(p)}
     <div class="cta"><a class="buy" href="${href}" target="_blank" rel="noopener sponsored" data-id="${esc(p.id)}">Ver oferta</a><button class="share" type="button" data-share="${esc(p.id)}" aria-label="Compartilhar oferta" title="Compartilhar">${SHARE_IC}</button></div>
