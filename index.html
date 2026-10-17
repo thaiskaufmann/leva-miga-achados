@@ -221,6 +221,13 @@ footer nav a{color:var(--accent);font-weight:700;text-decoration:none}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1401441855218016');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1401441855218016&ev=PageView&noscript=1"></noscript>
+<!-- fim Meta Pixel -->
 </head>
 <body>
 <div class="strip"><div class="wrap"><span id="topText">Receba os achadinhos no seu WhatsApp, todo dia</span><a id="topVip" href="#vip">Entrar no grupo VIP <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></div></div>
@@ -428,6 +435,22 @@ function route() {
   $app.innerHTML = html;
   const m = document.getElementById('more'); if (m) m.onclick = () => { show += 24; const y = scrollY; route(); scrollTo(0, y); };
 }
+// Meta Pixel: registra os cliques nos botões (ofertas, cupons, grupo, compartilhar)
+const px = (ev, data, custom) => { try { if (window.fbq) { custom ? fbq('trackCustom', ev, data || {}) : fbq('track', ev, data || {}); } } catch {} };
+document.addEventListener('click', e => {
+  const el = e.target.closest('a,button'); if (!el) return;
+  const id = el.dataset.id || el.dataset.share || el.closest('[data-id]')?.dataset.id || '';
+  const p = id ? D.items.find(i => i.id === id) : null;
+  const info = p ? { content_ids: [p.id], content_name: p.title, content_category: STORES[p.store]?.[0] || p.store, value: Number(p.price) || 0, currency: 'BRL' } : {};
+  if (el.dataset.share) { px('CompartilharOferta', info, true); return; }
+  if (el.matches('.cpn-line') || (el.closest('.cpn') && el.matches('a'))) { px('Lead', { content_name: 'Cupom', ...info }); px('ResgatarCupom', info, true); return; }
+  if (el.dataset.copy) { px('CopiarCupom', { codigo: el.dataset.copy }, true); return; }
+  if (el.dataset.id && el.matches('a')) { px('ViewContent', info); px('CliqueOferta', { ...info, botao: el.matches('.buy') ? 'ver_oferta' : 'card' }, true); return; }
+  const href = el.getAttribute('href') || '';
+  if (/chat\.whatsapp\.com|wa\.me/.test(href)) { px('Contact', { content_name: 'Grupo VIP' }); px('EntrarGrupoVIP', {}, true); return; }
+  if (/instagram\.com/.test(href)) { px('CliqueInstagram', {}, true); return; }
+  if (el.matches('.store')) { px('VerLoja', { loja: el.querySelector('.wm')?.textContent || '' }, true); return; }
+}, true);
 // conta o clique (sem atrapalhar a ida pra loja)
 document.addEventListener('click', e => {
   const a = e.target.closest('a[data-id]'); if (!a) return;
@@ -442,7 +465,7 @@ document.addEventListener('click', async e => {
   try { await navigator.clipboard.writeText(text + '\n' + p.link); toast('Oferta copiada! Agora é só colar e mandar 💕'); } catch { prompt('Copie a oferta:', text + '\n' + p.link); }
 }, true);
 document.addEventListener('click', async e => { const b = e.target.closest('[data-copy]'); if (!b) return; e.preventDefault(); try { await navigator.clipboard.writeText(b.dataset.copy); toast('Código copiado! Agora cola na loja 💕'); } catch { prompt('Copie o código:', b.dataset.copy); } });
-document.getElementById('sf').onsubmit = e => { e.preventDefault(); const q = document.getElementById('q').value.trim(); location.hash = q ? `#/busca?q=${encodeURIComponent(q)}` : '#/'; };
+document.getElementById('sf').onsubmit = e => { e.preventDefault(); const q = document.getElementById('q').value.trim(); if (q) px('Search', { search_string: q }); location.hash = q ? `#/busca?q=${encodeURIComponent(q)}` : '#/'; };
 window.addEventListener('hashchange', () => { show = 24; route(); if (!location.hash.includes('vip')) scrollTo(0, 0); });
 
 (async () => {
