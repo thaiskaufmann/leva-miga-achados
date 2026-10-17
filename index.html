@@ -387,10 +387,9 @@ function route() {
     document.title = 'Cupons · Leva, miga! Achados';
     const ks = ['todas', ...D.stores.filter(k => D.coupons.some(c => c.store === k) || D.items.some(i => i.store === k && couponOf(i)))];
     html = `<div class="crumb"><a href="#/">Início</a> › Cupons</div><nav class="chips" aria-label="Filtrar cupons por loja">${ks.map(k => `<a class="chip ${k === loja ? 'on' : ''}" href="#/cupons${k === 'todas' ? '' : '?loja=' + k}">${k === 'todas' ? 'Todas as lojas' : `<i style="background:${STORES[k][2]}"></i>${STORES[k][0]}`}</a>`).join('')}</nav>
-      <section class="sec"><div class="sec-h"><h2 class="t">Cupons pra resgatar <span class="hand">♡</span></h2><span class="sub">${list.length} cupons ativos</span></div>
-      ${list.length ? `<div class="cpns">${list.map(cpnCard).join('')}</div>` : '<p class="empty">Nenhum cupom ativo agora. Volta mais tarde que a gente atualiza o dia todo 💕</p>'}
+      ${list.length ? `<section class="sec"><div class="sec-h"><h2 class="t">Cupons pra resgatar <span class="hand">♡</span></h2><span class="sub">${list.length} cupons ativos</span></div><div class="cpns">${list.map(cpnCard).join('')}</div></section>` : D.items.some(i => couponOf(i) && (loja === 'todas' || i.store === loja)) ? '' : '<section class="sec"><p class="empty">Nenhum cupom ativo agora. Volta mais tarde que a gente atualiza o dia todo 💕</p></section>'}
       ${(() => { const pc = D.items.filter(i => couponOf(i) && (loja === 'todas' || i.store === loja)).sort(sortScore); return pc.length ? `<section class="sec"><div class="sec-h"><h2 class="t">Produtos com cupom</h2><span class="sub">${pc.length} ofertas</span></div><div class="grid">${pc.slice(0, show).map(card).join('')}</div>${pc.length > show ? '<button class="loadmore" id="more">Ver mais</button>' : ''}</section>` : ''; })()}
-      <p class="sub" style="margin-top:14px">Toque em <b>Resgatar</b> pra pegar o cupom na loja (precisa estar logada no app ou site da loja). Os cupons têm quantidade limitada e podem acabar antes do prazo.</p></section>`;
+      <p class="sub" style="margin-top:14px">Toque em <b>Resgatar</b> pra pegar o cupom na loja (precisa estar logada no app ou site da loja). Os cupons têm quantidade limitada e podem acabar antes do prazo.</p>`;
   } else if (path[0] === 'promocoes') {
     const list = byStore(D.items).sort(sortScore);
     document.title = 'Promoções do dia · Leva, miga! Achados';
