@@ -443,7 +443,11 @@ window.addEventListener('hashchange', () => { show = 24; route(); if (!location.
   try {
     const [s, it] = await Promise.all([
       sb.from('site_settings').select('*').eq('id', 1).maybeSingle(),
-      sb.from('site_items').select('id,store,cat,title,image,price,old_price,discount,sales,rating,link,coupon,score,pinned,added_at,updated_at').order('score', { ascending: false }).limit(3000)
+      (async () => { // o banco entrega até 1000 por vez: busca em partes
+        const all = []; const F = 'id,store,cat,title,image,price,old_price,discount,sales,rating,link,coupon,score,pinned,added_at,updated_at';
+        for (let from = 0; from < 6000; from += 1000) { const r = await sb.from('site_items').select(F).order('score', { ascending: false }).range(from, from + 999); if (r.error) return r; all.push(...(r.data || [])); if ((r.data || []).length < 1000) break; }
+        return { data: all, error: null };
+      })()
     ]);
     if (it.error) throw it.error;
     const st = s.data?.data || {};
