@@ -177,6 +177,10 @@ footer nav a{color:var(--accent);font-weight:700;text-decoration:none}
 .share:hover{background:#fff}
 .go-row{display:flex;gap:10px;align-items:center}
 @media (max-width:640px){.buy{height:38px;font-size:13px}.share{width:38px;height:38px}}
+.cpn-line{display:flex;gap:8px;align-items:flex-start;margin-top:8px;padding:8px 10px;border-radius:12px;background:#e9f7ee;color:#17603a;border:1.5px dashed #9fd8b5;text-decoration:none;font-size:12.5px;line-height:1.3}
+.cpn-line svg{flex:none;margin-top:1px}
+.cpn-line b{font-weight:800}
+.cpn-line small{display:block;font-size:11px;color:#3f7f5b;margin-top:1px}
 @media (max-width:900px){
   .hot{grid-template-columns:1fr 1fr}
   .big{grid-column:1/-1}
@@ -282,6 +286,20 @@ const sortScore = (a, b) => (b.pinned - a.pinned) || (b.score - a.score);
 const sortSales = (a, b) => (b.sales || 0) - (a.sales || 0) || (b.score - a.score);
 
 const SHARE_IC = '<svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>';
+const TK = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a3 3 0 0 0 0 6v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a3 3 0 0 0 0-6z"/><path d="m9.5 14.5 5-5"/></svg>';
+function couponOf(p) {
+  const c = String(p.coupon || '');
+  if (c.startsWith('pay:')) { const pay = Number(c.slice(4)); return pay > 0 && pay < p.price ? { pay, amazon: true } : null; }
+  const cp = D.coupons.find(x => x.id === c); if (!cp) return null;
+  let save = 0;
+  if (cp.type === 'fixed') save = cp.value; else if (cp.type === 'percent') save = Math.min(p.price * cp.value / 100, cp.cap || Infinity);
+  return { cp, pay: save ? Math.max(0, p.price - save) : 0 };
+}
+function couponRow(p) {
+  const c = couponOf(p); if (!c) return '';
+  if (c.amazon) return `<a class="cpn-line" href="${esc(p.link)}" target="_blank" rel="noopener sponsored" data-id="${esc(p.id)}">${TK}<span>Com cupom: <b>${brl(c.pay)}</b><small>ative o cupom na página do produto</small></span></a>`;
+  return `<a class="cpn-line" href="${esc(c.cp.link)}" target="_blank" rel="noopener sponsored">${TK}<span>Cupom ${esc(cpnValue(c.cp))}${c.pay ? `: pague <b>${brl(c.pay)}</b>` : ''}<small>${c.cp.code ? 'código ' + esc(c.cp.code) : 'toque aqui pra resgatar antes de comprar'}</small></span></a>`;
+}
 function card(p) {
   const s = STORES[p.store] || ['Loja', '?'];
   const href = esc(p.link);
@@ -293,8 +311,8 @@ function card(p) {
     <span class="was">${p.old_price ? brl(p.old_price) : ''}</span>
     <span class="now">${brl(p.price)}</span>
     ${p.sales ? `<span class="sold">${p.sales >= 1000 ? '+' + Math.floor(p.sales / 1000) + ' mil' : p.sales} vendidos</span>` : ''}
-    ${p.coupon ? `<span class="cupom">Cupom ${esc(p.coupon)}</span>` : ''}
     </a>
+    ${couponRow(p)}
     <div class="cta"><a class="buy" href="${href}" target="_blank" rel="noopener sponsored" data-id="${esc(p.id)}">Ver oferta</a><button class="share" type="button" data-share="${esc(p.id)}" aria-label="Compartilhar oferta" title="Compartilhar">${SHARE_IC}</button></div>
   </article>`;
 }
@@ -367,10 +385,11 @@ function route() {
   } else if (path[0] === 'cupons') {
     const list = D.coupons.filter(c => loja === 'todas' || c.store === loja);
     document.title = 'Cupons · Leva, miga! Achados';
-    const ks = ['todas', ...D.stores.filter(k => D.coupons.some(c => c.store === k))];
+    const ks = ['todas', ...D.stores.filter(k => D.coupons.some(c => c.store === k) || D.items.some(i => i.store === k && couponOf(i)))];
     html = `<div class="crumb"><a href="#/">Início</a> › Cupons</div><nav class="chips" aria-label="Filtrar cupons por loja">${ks.map(k => `<a class="chip ${k === loja ? 'on' : ''}" href="#/cupons${k === 'todas' ? '' : '?loja=' + k}">${k === 'todas' ? 'Todas as lojas' : `<i style="background:${STORES[k][2]}"></i>${STORES[k][0]}`}</a>`).join('')}</nav>
       <section class="sec"><div class="sec-h"><h2 class="t">Cupons pra resgatar <span class="hand">♡</span></h2><span class="sub">${list.length} cupons ativos</span></div>
       ${list.length ? `<div class="cpns">${list.map(cpnCard).join('')}</div>` : '<p class="empty">Nenhum cupom ativo agora. Volta mais tarde que a gente atualiza o dia todo 💕</p>'}
+      ${(() => { const pc = D.items.filter(i => couponOf(i) && (loja === 'todas' || i.store === loja)).sort(sortScore); return pc.length ? `<section class="sec"><div class="sec-h"><h2 class="t">Produtos com cupom</h2><span class="sub">${pc.length} ofertas</span></div><div class="grid">${pc.slice(0, show).map(card).join('')}</div>${pc.length > show ? '<button class="loadmore" id="more">Ver mais</button>' : ''}</section>` : ''; })()}
       <p class="sub" style="margin-top:14px">Toque em <b>Resgatar</b> pra pegar o cupom na loja (precisa estar logada no app ou site da loja). Os cupons têm quantidade limitada e podem acabar antes do prazo.</p></section>`;
   } else if (path[0] === 'promocoes') {
     const list = byStore(D.items).sort(sortScore);
